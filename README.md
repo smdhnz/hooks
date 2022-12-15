@@ -10,4 +10,20 @@ function useZodForm<T extends FieldValues>(schema: AnyZodObject) {
     resolver: zodResolver(schema),
   });
 }
+
+// Usage
+
+import { z } from "zod";
+
+const schema = z.object({
+  inputText: z.string().min(1)
+})
+
+type Schema = z.infer<typeof schema>
+
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useZodForm<Schema>(schema);
 ```
