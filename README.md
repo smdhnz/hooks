@@ -1,6 +1,8 @@
 # useZodForm
 
 ```ts
+// yarn add react-hook-form @hookform/resolvers zod
+
 import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnyZodObject } from "zod";
