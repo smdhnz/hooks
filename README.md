@@ -1,31 +1,22 @@
 # useZodForm
 
 ```ts
-// yarn add react-hook-form @hookform/resolvers zod
-
-import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AnyZodObject } from "zod";
-
-function useZodForm<T extends FieldValues>(schema: AnyZodObject) {
-  return useForm<T>({
-    resolver: zodResolver(schema),
-  });
-}
-
-// Usage
-
+import { useForm, type UseFormProps } from "react-hook-form";
 import { z } from "zod";
 
-const schema = z.object({
-  inputText: z.string().min(1)
-})
+function useZodForm<TSchema extends z.ZodType>(
+  props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
+    schema: TSchema;
+  }
+) {
+  const form = useForm<TSchema["_input"]>({
+    ...props,
+    resolver: zodResolver(props.schema, undefined),
+  });
 
-type Schema = z.infer<typeof schema>
+  return form;
+}
 
-const {
-  register,
-  handleSubmit,
-  formState: { errors },
-} = useZodForm<Schema>(schema);
+export { useZodForm };
 ```
